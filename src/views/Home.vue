@@ -7,7 +7,7 @@
       >
         <v-list>
           <v-list-item
-            prepend-avatar="https://randomuser.me/api/portraits/women/85.jpg"
+            prepend-avatar="src/assets/airplanelogo.png"
             title="Ardu Logger"
           ></v-list-item>
         </v-list>
