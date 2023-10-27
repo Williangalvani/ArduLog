@@ -21,10 +21,18 @@
         </v-list>
       </v-navigation-drawer>
 
-      <v-main></v-main>
+      <v-main>
+        <Dashboard />
+      </v-main>
     </v-app>
   </v-card>
 </template>
 
 <script lang="ts" setup>
+import Dashboard from '../components/Dashboard.vue'
+
+components: {
+    Dashboard
+  }
+
 </script>
