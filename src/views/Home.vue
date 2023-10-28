@@ -22,16 +22,21 @@
       </v-navigation-drawer>
 
       <v-main>
-        <Dashboard />
+        <v-container>
+          <Dashboard />
+          <Page />
+        </v-container>
       </v-main>
     </v-app>
   </v-card>
 </template>
 
 <script lang="ts" setup>
+import Page from '../components/Page.vue'
 import Dashboard from '../components/Dashboard.vue'
 
 components: {
+    Page
     Dashboard
   }
 
