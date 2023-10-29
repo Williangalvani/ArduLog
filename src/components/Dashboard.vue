@@ -16,14 +16,17 @@
     </v-tabs>
   </div>
   <page v-model="tabs[tab]" />
+  <json-viewer :value="tabs" />
 </template>
 
 <script lang="ts">
 import Page from './Page.vue'
+import JsonViewer from 'vue-json-viewer'
 
 export default {
   components: {
-    Page
+    Page,
+    JsonViewer,
   },
   data: () => ({
     tabs: [
