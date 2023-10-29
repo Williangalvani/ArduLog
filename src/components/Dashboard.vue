@@ -14,22 +14,30 @@
         <v-icon>mdi-plus</v-icon>
       </v-tab>
     </v-tabs>
+    <v-row>
+     <v-col cols="8">
+      <page v-model="tabs[tab]" />
+    </v-col>
+    <v-col cols="4">
+      <vue-json-pretty :data="tabs" />
+    </v-col>  
+    </v-row>
   </div>
-  <page v-model="tabs[tab]" />
-  <json-viewer :value="tabs" />
 </template>
 
 <script lang="ts">
+import { ref, reactive } from 'vue'
 import Page from './Page.vue'
-import JsonViewer from 'vue-json-viewer'
+import VueJsonPretty from 'vue-json-pretty';
+import 'vue-json-pretty/lib/styles.css';
 
 export default {
   components: {
     Page,
-    JsonViewer,
+    VueJsonPretty,
   },
-  data: () => ({
-    tabs: [
+  setup() {
+    const tabs = reactive([
       { id: 0, name: 'Item 1', content: [
         { type: "Plotly", name: 'Plot 1', content: 'Content 1', id: 0 },
         { type: "Plotly", name: 'Plot 2', content: 'Content 2', id: 1 }
@@ -38,31 +46,38 @@ export default {
       { id: 2, name: 'Item 3', content: [] },
       { id: 3, name: 'Item 4', content: [] },
       { id: 4, name: 'Item 5', content: [] }
-    ],
-    tab: 0,
-    nextTabId: 5
-  }),
-  methods: {
-    addTab() {
+    ])
+    const tab = ref(0)
+    const nextTabId = ref(5)
+
+    const addTab = () => {
       const newTab = {
-        id: this.nextTabId,
-        name: `Item ${this.nextTabId + 1}`,
+        id: nextTabId.value,
+        name: `Item ${nextTabId.value + 1}`,
         content: {}
       }
-      this.tabs.push(newTab)
-      this.tab = newTab.id
-      this.nextTabId++
-    },
-    removeTab(tabId: number) {
-      const index = this.tabs.findIndex(item => item.id === tabId)
+      tabs.push(newTab)
+      tab.value = newTab.id
+      nextTabId.value++
+    }
+
+    const removeTab = (tabId: number) => {
+      const index = tabs.findIndex(item => item.id === tabId)
       if (index !== -1) {
-        this.tabs.splice(index, 1)
+        tabs.splice(index, 1)
       }
-      if (this.tabs.length > 0) {
-        this.tab = this.tabs[0].id
+      if (tabs.length > 0) {
+        tab.value = tabs[0].id
       } else {
-        this.tab = 0
+        tab.value = 0
       }
+    }
+
+    return {
+      tabs,
+      tab,
+      addTab,
+      removeTab
     }
   }
 }

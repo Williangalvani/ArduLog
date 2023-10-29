@@ -11,7 +11,7 @@
     <template #item="{element}">
       <v-col cols="12">
         <v-card>
-          <Plotly :modelValue="element"/>
+          <component :is="stringToComponent(element.type)" :modelValue="element"/>
         </v-card>
       </v-col>
     </template>

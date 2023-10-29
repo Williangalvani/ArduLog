@@ -15,7 +15,7 @@
     "pinia": "^2.0.0",
     "roboto-fontface": "*",
     "vue": "^3.3.7",
-    "vue-json-viewer": "3",
+    "vue-json-pretty": "^2.2.4",
     "vue-router": "^4.0.0",
     "vue3-dnd": "^2.0.4",
     "vuedraggable": "^4.1.0",
