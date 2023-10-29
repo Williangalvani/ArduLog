@@ -14,28 +14,27 @@
         <v-icon>mdi-plus</v-icon>
       </v-tab>
     </v-tabs>
-    <v-tabs-items v-model="tab">
-      <v-tab-item
-        v-for="item in tabs"
-        :key="item.id"
-        :value="item.id"
-      >
-        <!-- This is where you can add content for each tab using the item.content object -->
-        {{ item.content }}
-      </v-tab-item>
-    </v-tabs-items>
   </div>
+  <page v-model="tabs[tab]" />
 </template>
 
 <script lang="ts">
+import Page from './Page.vue'
+
 export default {
+  components: {
+    Page
+  },
   data: () => ({
     tabs: [
-      { id: 0, name: 'Item 1', content: {} },
-      { id: 1, name: 'Item 2', content: {} },
-      { id: 2, name: 'Item 3', content: {} },
-      { id: 3, name: 'Item 4', content: {} },
-      { id: 4, name: 'Item 5', content: {} }
+      { id: 0, name: 'Item 1', content: [
+        { type: "Plotly", name: 'Plot 1', content: 'Content 1', id: 0 },
+        { type: "Plotly", name: 'Plot 2', content: 'Content 2', id: 1 }
+      ]},
+      { id: 1, name: 'Item 2', content: [] },
+      { id: 2, name: 'Item 3', content: [] },
+      { id: 3, name: 'Item 4', content: [] },
+      { id: 4, name: 'Item 5', content: [] }
     ],
     tab: 0,
     nextTabId: 5

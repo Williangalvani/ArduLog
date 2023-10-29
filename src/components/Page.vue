@@ -1,59 +1,81 @@
 <template>
-    <draggable 
-      v-model="cards" 
-      group="people" 
-      handle=".handle"
-      @start="drag=true" 
-      @end="drag=false" 
-      ghost-class="ghost"
-      item-key="id">
-      <template #item="{element}">
-          <v-col cols="12">
-            <v-card>
-              <v-card-title>
-                <v-icon
-                  class="handle"
-                  end
-                  icon="mdi-drag"
-                ></v-icon>
-                {{element.name}}
-              </v-card-title>
-              <v-card-text>
-                <v-img src="https://user-images.githubusercontent.com/6562690/54934415-b4d25b80-4edb-11e9-8758-fb29ada50499.png"></v-img>
-                {{element.content}}
-              </v-card-text>
-            </v-card>
-          </v-col>
-      </template>
-    </draggable>
+  <draggable 
+    v-model="internalCards" 
+    group="people" 
+    handle=".handle"
+    @start="onStart" 
+    @end="onEnd" 
+    ghost-class="ghost"
+    item-key="id"
+    @update="handleUpdate">
+    <template #item="{element}">
+      <v-col cols="12">
+        <v-card>
+          <Plotly :modelValue="element"/>
+        </v-card>
+      </v-col>
+    </template>
+  </draggable>
 </template>
 
-
 <script lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import draggable from 'vuedraggable'
+import Plotly from './Displays/Plotly.vue'
 
 export default {
   components: {
-    draggable
+    draggable,
+    Plotly
+    // Remember to import and register other potential component types here
   },
-  setup() {
-    const cards = ref([
-      { name: 'Plot 1', content: 'Content 1' },
-      { name: 'Plot 2', content: 'Content 2' },
-      { name: 'Plot 3', content: 'Content 3' },
-      // ... add more cards as needed
-    ])
+  props: {
+    modelValue: {
+      type: Object,
+      required: true,
+      default: () => ({
+        content: []
+      })
+    }
+  },
+  setup(props, { emit }) {
+    const internalCards = ref([...props.modelValue.content])
+    const drag = ref(false)
+
+    watch(() => props.modelValue.content, newValue => {
+      internalCards.value = [...newValue]
+    })
+
+    const onStart = () => {
+      drag.value = true
+    }
+
+    const onEnd = () => {
+      drag.value = false
+    }
+
+    const stringToComponent = (str: string) => {
+    switch (str) {
+      case 'Plotly':
+        return Plotly
+      default:
+        return null
+    }
+  }
+
+    const handleUpdate = () => {
+      emit('update:modelValue', { content: internalCards.value })
+    }
 
     return {
-      cards
+      internalCards,
+      drag,
+      onStart,
+      onEnd,
+      handleUpdate,
+      stringToComponent
     }
-  },
-  data() {
-    return {
-      drag: false,
-    }
-  },
+  }
 }
 </script>
 

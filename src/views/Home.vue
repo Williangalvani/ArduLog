@@ -24,7 +24,6 @@
       <v-main>
         <v-container>
           <Dashboard />
-          <Page />
         </v-container>
       </v-main>
     </v-app>
