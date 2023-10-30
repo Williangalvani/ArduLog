@@ -64,7 +64,10 @@ export default {
   }
 
     const handleUpdate = () => {
-      emit('update:modelValue', { content: internalCards.value })
+      emit('update:modelValue', {
+        ...props.modelValue,
+        content: [...internalCards.value]
+      })
     }
 
     return {
@@ -80,10 +83,6 @@ export default {
 </script>
 
 <style scoped>
-.handle {
-  cursor: move;
-}
-
 .dragArea {
   display: flex;
   flex-wrap: wrap;

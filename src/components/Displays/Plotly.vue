@@ -6,7 +6,7 @@
         end
         icon="mdi-drag"
       ></v-icon>
-      PLOTLY NERVOSO{{modelValue.name}}
+      {{modelValue.name}}
     </v-card-title>
     <v-card-text>
       <v-img src="https://user-images.githubusercontent.com/6562690/54934415-b4d25b80-4edb-11e9-8758-fb29ada50499.png"></v-img>
@@ -48,3 +48,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.handle {
+  cursor: move;
+}
+</style>
