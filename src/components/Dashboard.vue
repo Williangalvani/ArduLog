@@ -22,6 +22,7 @@
       <vue-json-pretty :data="tabs" />
     </v-col>  
     </v-row>
+    <FileDragModal />
   </div>
 </template>
 
@@ -29,11 +30,13 @@
 import { ref, reactive } from 'vue'
 import Page from './Page.vue'
 import VueJsonPretty from 'vue-json-pretty';
+import FileDragModal from './FileDropModal.vue'
 import 'vue-json-pretty/lib/styles.css';
 
 export default {
   components: {
     Page,
+    FileDragModal,
     VueJsonPretty,
   },
   setup() {
