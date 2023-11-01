@@ -26,7 +26,7 @@ export class CsvLoader extends DataLoader {
   }
 
   public supportsStreaming(): boolean {
-    throw new Error("Method not implemented.");
+    return false;
   }
 
   public onDisconnect(): void {

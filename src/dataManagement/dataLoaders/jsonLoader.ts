@@ -24,15 +24,11 @@ export class JsonLoader extends DataLoader {
   }
 
   public supportsStreaming(): boolean {
-    throw new Error("Method not implemented.");
+    return true
   }
 
   public onDisconnect(): void {
     throw new Error("Method not implemented.");
-  }
-
-  public load(input: any): boolean {
-    return false;
   }
 
   public consume(data: ArrayBuffer): void {

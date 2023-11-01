@@ -13,11 +13,6 @@ export class MavlinkLoader extends DataLoader {
     throw new Error("Method not implemented.");
   }
 
-  public load(input: any): boolean {
-    console.log(`Loading CSV file from ${input}`);
-    return false
-  }
-
   public consume(data: ArrayBuffer): void {
     throw new Error("Method not implemented.");
   }

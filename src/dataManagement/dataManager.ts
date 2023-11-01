@@ -13,10 +13,9 @@ enum DataFormat {
 
 
 class DataManager {
-    private static instance: DataManager;
-    private _data: any;
     private loaders: Record<DataFormat, DataLoader> = {} as Record<DataFormat, DataLoader>;
     private detectedFormat = DataFormat.UNKNOWN;
+
 
     private constructor() { 
       this.loaders[DataFormat.CSV] = new CsvLoader();
@@ -25,32 +24,24 @@ class DataManager {
       this.loaders[DataFormat.MAVLINK] = new MavlinkLoader();
     }
 
-    public static getInstance(): DataManager {
-      if (!DataManager.instance) {
-        DataManager.instance = new DataManager();
+    public loadFile(input: File): boolean {
+      for (const [type, loader] of Object.entries(this.loaders)) {
+        if (loader.loadFile(input)) {
+          this.detectedFormat = type as DataFormat;
+          return true;
+        }
       }
-      return DataManager.instance;
+      return false;
     }
 
-    public get data(): any {
-        return this._data;
+    public loadWebsocket(input: string): boolean {
+      for (const [type, loader] of Object.entries(this.loaders)) {
+        if (loader.loadWebsocket(input)) {
+          this.detectedFormat = type as DataFormat;
+          return true;
+        }
+      }
+      return false;
     }
 
-    public set data(value: any) {
-        this._data = value;
-    }
-
-    public consumeData(data: ArrayBuffer): void {
-      if (this.detectedFormat === DataFormat.UNKNOWN) {
-          for (const [type, loader] of Object.entries(this.loaders)) {
-              if (loader.isDataValid(data)) {
-                  this.detectedFormat = type as DataFormat;
-                  break;
-              }
-          }
-      }
-      if (this.detectedFormat !== DataFormat.UNKNOWN) {
-          this.loaders[this.detectedFormat].consume(data);
-      }
-    }
 }
