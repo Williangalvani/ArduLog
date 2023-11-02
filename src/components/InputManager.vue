@@ -27,7 +27,7 @@
               <v-file-input label="Select file" @change="handleFileInput" multiple />
               <v-list>
                 <v-list-item v-for="(file, index) in files" :key="index">
-                    {{ file.name }}
+                    {{ file[0].name }} {{ file[1] }}
                 </v-list-item>
               </v-list>
             </v-card-text>
@@ -39,6 +39,7 @@
 <script lang="ts">
 import { ref } from 'vue'
 import { dataStore } from '../store/dataStore'
+import DataManager, { DataFormat } from '../dataManagement/dataManager'
 
 export default {
   name: 'InputManager',
@@ -52,12 +53,17 @@ export default {
       newWebSocketAddress.value = ''
     }
 
-    const handleFileInput = (event: { target: { files: any } }) => {
+    const handleFileInput = async (event: { target: { files: any } }) => {
       const files = event.target.files
       for (let i = 0; i < files.length; i++) {
-        datastore.files.push(files[i])
+        const dataType = await DataManager.getInstance().identifyFileFormat(files[i])
+        if (dataType !== DataFormat.UNKNOWN) {
+          datastore.files.push([files[i], dataType])
+        }
       }
     }
+
+
 
     return {
       newWebSocketAddress,

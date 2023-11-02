@@ -1,6 +1,8 @@
 {
   "compilerOptions": {
+    "allowJs": true,
     "baseUrl": ".",
+    "outDir": "./dist",
     "target": "esnext",
     "useDefineForClassFields": true,
     "allowSyntheticDefaultImports": true,
@@ -26,6 +28,7 @@
     "src/**/*.d.ts",
     "src/**/*.tsx",
     "src/**/*.vue",
+    "src/**/*.js",
     "vite.config.ts"
   ]
 }

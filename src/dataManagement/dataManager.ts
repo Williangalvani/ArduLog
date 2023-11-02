@@ -2,8 +2,9 @@ import { CsvLoader } from "./dataLoaders/csvLoader";
 import { DataflashLoader } from "./dataLoaders/dataflashLoader";
 import { JsonLoader } from "./dataLoaders/jsonLoader";
 import { MavlinkLoader } from "./dataLoaders/mavlinkLoader";
+import DataLoader from "./dataLoaders/abstractLoader";
 
-enum DataFormat {
+export enum DataFormat {
     CSV = "CSV",
     DATAFLASH = "DATAFLASH",
     JSON = "JSON",
@@ -12,9 +13,10 @@ enum DataFormat {
 }
 
 
-class DataManager {
+export default class DataManager {
     private loaders: Record<DataFormat, DataLoader> = {} as Record<DataFormat, DataLoader>;
     private detectedFormat = DataFormat.UNKNOWN;
+    private static instance: DataManager;
 
 
     private constructor() { 
@@ -23,15 +25,23 @@ class DataManager {
       this.loaders[DataFormat.JSON] = new JsonLoader();
       this.loaders[DataFormat.MAVLINK] = new MavlinkLoader();
     }
+    
+    // singleton getter
+    public static getInstance(): DataManager {
+      if (!DataManager.instance) {
+        DataManager.instance = new DataManager();
+      }
+      return DataManager.instance;
+    }
 
-    public loadFile(input: File): boolean {
+
+    public async identifyFileFormat(input: File): Promise<DataFormat> {
       for (const [type, loader] of Object.entries(this.loaders)) {
-        if (loader.loadFile(input)) {
-          this.detectedFormat = type as DataFormat;
-          return true;
+        if (await loader.isDataValid(input)) {
+          return type as DataFormat;
         }
       }
-      return false;
+      return DataFormat.UNKNOWN;
     }
 
     public loadWebsocket(input: string): boolean {

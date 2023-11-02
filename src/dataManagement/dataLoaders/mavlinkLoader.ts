@@ -1,7 +1,9 @@
 
+import DataLoader from "./abstractLoader";
+
 export class MavlinkLoader extends DataLoader {
   
-  public isDataValid(data: ArrayBuffer): boolean {
+  public async isDataValid(data: File): Promise<boolean> {
     return false
   }
 
