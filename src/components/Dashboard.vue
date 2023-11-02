@@ -34,6 +34,7 @@ import FileDragModal from './FileDropModal.vue'
 import 'vue-json-pretty/lib/styles.css';
 
 export default {
+  name: 'Dashboard',
   components: {
     Page,
     FileDragModal,

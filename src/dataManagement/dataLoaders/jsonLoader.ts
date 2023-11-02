@@ -23,6 +23,10 @@ export class JsonLoader extends DataLoader {
     }
   }
 
+  public name(): string {
+    throw new Error("Method not implemented.");
+  }
+
   public supportsStreaming(): boolean {
     return true
   }

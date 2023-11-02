@@ -2,31 +2,11 @@
   <div>
     <!-- Vuetify Dialog for Drop File -->
     <v-dialog v-model="showModal" persistent max-width="590">
-      <v-card>
         <v-card-title class="headline">Drop file here to load</v-card-title>
         <v-card-text>
-        <v-row no-gutters>
-          <v-col cols="8"> <!-- Adjust the 'cols' value as needed -->
-            <v-text-field label="WebSocket URL" v-model="websocketAddress" />
-          </v-col>
-          <v-col cols="4" class="d-flex align-center"> <!-- Adjust the 'cols' value as needed -->
-            <v-btn @click="connectWebSocket">Connect</v-btn>
-          </v-col>
-        </v-row>
-        <v-file-input label="Select file" @change="handleFileInput" />
-      </v-card-text>
-        <v-list>
-          <v-list-item v-for="(file, index) in files" :key="index">
-            <v-list-item-content>
-              {{ file.name }}
-            </v-list-item-content>
-          </v-list-item>
-        </v-list>
-        <v-card-text v-if="websocketData">
-          Data received from WebSocket: {{ websocketData }}
         </v-card-text>
-      </v-card>
     </v-dialog>
+
   </div>
 </template>
 
@@ -36,7 +16,7 @@ import { ref, onMounted, onBeforeUnmount } from 'vue'
 export default {
   name: 'FileDragModal',
   setup() {
-    const showModal = ref<boolean>(true)
+    const showModal = ref<boolean>(false)
     const files = ref<File[]>([])
     const websocketAddress = ref<string>('')
     const websocketData = ref<string | null>(null)
@@ -73,28 +53,6 @@ export default {
       files.value.push(...selectedFiles)
     }
 
-    const connectWebSocket = () => {
-      if (websocketAddress.value) {
-        websocket = new WebSocket(websocketAddress.value)
-
-        websocket.onopen = (event) => {
-          console.log('WebSocket connection opened:', event)
-        }
-
-        websocket.onmessage = (event) => {
-          websocketData.value = event.data
-        }
-
-        websocket.onerror = (error) => {
-          console.error('WebSocket Error:', error)
-        }
-
-        websocket.onclose = (event) => {
-          console.log('WebSocket connection closed:', event)
-        }
-      }
-    }
-
     onMounted(() => {
       window.addEventListener('dragover', handleDragOver)
       window.addEventListener('dragleave', handleDragLeave)
@@ -115,7 +73,6 @@ export default {
       websocketAddress,
       files,
       handleFileInput,
-      connectWebSocket,
       websocketData
     }
   }

@@ -2,6 +2,7 @@ class DataLoader {
     // These files are responsible for loading data from files or websockets
     // they are not responsible for seeking, but should be able to load any 
     // arbitrary data from a file or websocket, upon request.
+    // Live data should be emitted on receiving a message from the websocket.
 
     file: File | null = null;
     websocket: WebSocket | null = null;
@@ -18,7 +19,6 @@ class DataLoader {
         // load 1kb of data from the file and feed it to the isDataValid function
         // if the data is valid, then we can load the rest of the file.
         const websocket = new WebSocket(url);
-        websocket.binaryType = "arraybuffer";
         websocket.onmessage = (evt) => {
             if (evt.data) {
                 const data = evt.data as ArrayBuffer;
