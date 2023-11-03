@@ -14,9 +14,21 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, toRefs, onMounted } from 'vue'
+import { ref, watch, toRefs, onMounted, Prop } from 'vue'
 //import Plotly from 'plotly.js-dist-min'
 import Plotly from 'plotly.js-dist'
+
+    const props = defineProps({
+      modelValue: {
+        type: Object,
+        required: true,
+        default: () => ({
+          content: []
+        })
+      }
+    })
+
+    const name = ref(props.modelValue.name)
 
     const plot = ref(null) 
     onMounted(() => {
@@ -27,8 +39,10 @@ import Plotly from 'plotly.js-dist'
         type: 'scatter'
       }];
 
+      var config = {responsive: true}
       var layout = {
-        title: 'Sales Growth',
+        title: name.value,
+        width: '100%',
         xaxis: {
           title: 'Year',
           showgrid: false,
@@ -39,7 +53,7 @@ import Plotly from 'plotly.js-dist'
           showline: false
         }
       };
-      Plotly.newPlot(plot.value, data, layout);
+      Plotly.newPlot(plot.value, data, layout, config);
       })
 </script>
 
