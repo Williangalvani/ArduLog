@@ -20,8 +20,8 @@ export default class DataManager {
 
 
     private constructor() { 
-      this.loaders[DataFormat.CSV] = new CsvLoader();
       this.loaders[DataFormat.DATAFLASH] = new DataflashLoader();
+      this.loaders[DataFormat.CSV] = new CsvLoader();
       this.loaders[DataFormat.JSON] = new JsonLoader();
       this.loaders[DataFormat.MAVLINK] = new MavlinkLoader();
     }
