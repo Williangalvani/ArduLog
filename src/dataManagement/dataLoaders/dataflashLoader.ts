@@ -17,7 +17,7 @@ export class DataflashLoader extends DataLoader {
 
       let reader = new FileReader()
       reader.onload = (e) => {
-          let arrayBuffer = new Uint8Array(reader.result)
+          let arrayBuffer = new Uint8Array(reader.result as ArrayBuffer)
           let data = reader.result
           this.worker.postMessage({
               action: 'parse',

@@ -5,28 +5,44 @@ export class CsvLoader extends DataLoader {
   public async isDataValid(data: File): Promise<boolean> {
     // Convert the ArrayBuffer to a string
   
-    return false
 
-    // // Check if the string contains any non-CSV characters
-    // const nonCsvChars = /[^a-zA-Z0-9\s,\"\n\r\-\.]/;
-    // if (nonCsvChars.test(dataStr)) {
-    //   return false;
-    // }
+    let reader = new FileReader()
+    let text = undefined as string | undefined
+    let timedOut = false
 
-    // // Check for a valid header (alphabetic characters separated by commas)
-    // const headerPattern = /^[a-zA-Z\s]+(,[a-zA-Z\s]+)*\n/;
+    reader.onload = (e) => {
+      console.log(e)
+      if (reader.result) {
+        text = new TextDecoder('utf-8').decode((reader.result.slice(0, 1024)) as ArrayBuffer)
+      }
+    }
+    reader.readAsArrayBuffer(data)
+    setInterval(() => {timedOut = true}, 1000)
 
-    // if (headerPattern.test(dataStr)) {
-    //   return true; // Valid header found
-    // }
+    while (text === undefined && !timedOut) {
+      await new Promise(r => setTimeout(r, 100));
+    }
+    console.log(text)
+    if (text === undefined) {
+      return false
+    }
 
-    // // Check for other valid or partial CSV structures
-    // if (dataStr.includes(",") || dataStr.includes("\n")) {
-    //   return true; // It has CSV delimiters (comma or newline)
-    // }
+    // Check for a valid header (alphabetic characters separated by commas)
+    const headerPattern = /^[a-zA-Z%\s]+(,[a-zA-Z\s]+)*\n/;
 
-    // // If neither a valid header nor CSV delimiters are found, it's likely not valid CSV data
-    // return false;
+    if (headerPattern.test(text)) {
+      console.log("header pattern")
+      return true; // Valid header found
+    }
+
+
+    // Check for other valid or partial CSV structures
+    if (text.includes(",") || text.includes("\n")) {
+      return true; // It has CSV delimiters (comma or newline)
+    }
+
+    // If neither a valid header nor CSV delimiters are found, it's likely not valid CSV data
+    return false;
   }
 
   public supportsStreaming(): boolean {
