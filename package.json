@@ -13,7 +13,7 @@
     "core-js": "^3.29.0",
     "lru-cache": "^10.0.1",
     "pinia": "^2.0.0",
-    "plotly.js": "^2.27.0",
+    "plotly.js-dist": "^2.27.0",
     "roboto-fontface": "*",
     "vue": "^3.3.7",
     "vue-json-pretty": "^2.2.4",

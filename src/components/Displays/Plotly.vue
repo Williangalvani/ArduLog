@@ -16,10 +16,11 @@
 <script setup lang="ts">
 import { ref, watch, toRefs, onMounted } from 'vue'
 //import Plotly from 'plotly.js-dist-min'
-import Plotly from 'plotly.js'
+import Plotly from 'plotly.js-dist'
 
     const plot = ref(null) 
     onMounted(() => {
+      console.log(plot.value)
       var data = [{
         x: [1999, 2000, 2001, 2002],
         y: [10, 15, 13, 17],
@@ -38,7 +39,7 @@ import Plotly from 'plotly.js'
           showline: false
         }
       };
-      Plotly.newPlot(plot, data, layout);
+      Plotly.newPlot(plot.value, data, layout);
       })
 </script>
 
