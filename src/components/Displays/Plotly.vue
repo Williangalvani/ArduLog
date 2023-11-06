@@ -8,7 +8,7 @@
       ></v-icon>
     </v-card-title>
     <v-card-text>
-      <div ref="plot" style="width:90%;height:250px;"></div>
+      <div id="plotly" ref="plot" style="width:90%;height:250px;"></div>
     </v-card-text>
   </v-card>
 </template>
@@ -30,7 +30,7 @@ import Plotly from 'plotly.js-dist'
 
     const name = ref(props.modelValue.name)
 
-    const plot = ref(null) 
+    const plot = ref(null)
     onMounted(() => {
       console.log(plot.value)
       var data = [{
@@ -42,7 +42,7 @@ import Plotly from 'plotly.js-dist'
       var config = {responsive: true}
       var layout = {
         title: name.value,
-        width: '100%',
+        autosize: true,
         xaxis: {
           title: 'Year',
           showgrid: false,
@@ -60,5 +60,10 @@ import Plotly from 'plotly.js-dist'
 <style scoped>
 .handle {
   cursor: move;
+}
+
+div #plotly {
+  width: 100% !important;
+  height: 350px !important;
 }
 </style>

@@ -22,7 +22,7 @@
       </v-navigation-drawer>
 
       <v-main>
-        <v-container>
+        <v-container fluid>
           <Dashboard />
           <v-dialog v-model="showInputManager" width="auto" min-width="500px">
             <InputManager />

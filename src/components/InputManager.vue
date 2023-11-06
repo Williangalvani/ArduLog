@@ -24,10 +24,10 @@
               </v-list>
             </v-card-text>
             <v-card-text key="files" v-if="tab === 1">
-              <v-file-input label="Select file" @change="handleFileInput" multiple />
+              <v-file-input ref="fileInput" label="Select file" @change="handleFileInput" multiple />
               <v-list>
                 <v-list-item v-for="(file, index) in files" :key="index">
-                    {{ file[0].name }} {{ file[1] }}
+                    {{ file[0].name }} <v-chip>{{ file[1] }}</v-chip>
                 </v-list-item>
               </v-list>
             </v-card-text>
@@ -47,6 +47,7 @@ export default {
     const newWebSocketAddress = ref<string>('')
     const tab = ref<number>(0)
     const datastore = dataStore()
+    const fileInput = ref<HTMLInputElement | null>(null)
 
     const addWebSocket = () => {
       datastore.websockets.push(new WebSocket(newWebSocketAddress.value))
@@ -61,6 +62,7 @@ export default {
           datastore.files.push([files[i], dataType])
         }
       }
+      fileInput.value?.reset()
     }
 
 
@@ -68,6 +70,7 @@ export default {
     return {
       newWebSocketAddress,
       tab,
+      fileInput,
       datastore,
       addWebSocket,
       handleFileInput,
