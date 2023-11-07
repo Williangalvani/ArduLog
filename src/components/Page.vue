@@ -14,7 +14,8 @@
       <template #item="{element}">
         <v-col cols="12">
           <v-card>
-            <component :is="stringToComponent(element.type)" :modelValue="element"/>
+            <!-- Pass a method to the component that allows it to emit a delete event -->
+            <component :is="stringToComponent(element.type)" :modelValue="element" @delete="deleteCard" />
           </v-card>
         </v-col>
       </template>
@@ -35,11 +36,20 @@
         <v-col cols="12">
           <v-card>
             <!-- Pass a method to the component that allows it to emit a delete event -->
-            <component :is="stringToComponent(element.type)" :modelValue="element" @delete="deleteCard(index)" />
+            <component :is="stringToComponent(element.type)" :modelValue="element" @delete="deleteCard(element.id)" />
           </v-card>
         </v-col>
       </template>
     </draggable>
+    <v-btn
+      fab
+      dark
+      small
+      color="primary"
+      class="add-button"
+      @click="addCard">
+      <v-icon>mdi-plus</v-icon>
+    </v-btn>
   </v-row>
 </template>
 
@@ -96,15 +106,37 @@ export default {
     }
 
     // Add a method to handle the delete event
-    const deleteCard = (index: number) => {
+    const deleteCard = (id: number) => {
       // Remove the card from the array
-      internalCards.value.splice(index, 1)
+      internalCards.value[0] = internalCards.value[0].filter((card: { id: number }) => card.id !== id)
+      internalCards.value[1] = internalCards.value[1].filter((card: { id: number }) => card.id !== id)
       // Emit an update event to the parent component
       emit('update:modelValue', {
         ...props.modelValue,
         content: [...internalCards.value]
       })
     }
+
+    const newId = () => {
+      const allCards = [...internalCards.value[0], ...internalCards.value[1]]
+      return allCards.map((card: { id: any }) => card.id).reduce((a: number, b: number) => Math.max(a, b), 0) + 1
+    }
+
+    const addCard = () => {
+      internalCards.value[0].push(
+        {
+          type: "Plotly",
+          name: 'Plot 2',
+          content: 'Content 2',
+          id: newId(),
+        })
+
+      // Emit an update event to the parent component
+      emit('update:modelValue', {
+        ...props.modelValue,
+        content: [...internalCards.value]
+      });
+    };
 
     return {
       internalCards,
@@ -113,7 +145,8 @@ export default {
       onEnd,
       handleUpdate,
       stringToComponent,
-      deleteCard
+      deleteCard,
+      addCard
     }
   }
 }
@@ -148,5 +181,12 @@ export default {
     max-width: 100%; /* This ensures that each column is not more than 100% width */
     box-sizing: border-box; /* This ensures padding and borders are included in the width */
   }
+}
+
+.add-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 2; /* Ensures the button stays above other elements */
 }
 </style>
