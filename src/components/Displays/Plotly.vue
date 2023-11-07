@@ -6,6 +6,14 @@
         end
         icon="mdi-drag"
       ></v-icon>
+
+      <!-- This spacer pushes the delete icon to the right -->
+      <v-spacer></v-spacer>
+
+      <!-- Delete icon button -->
+      <v-btn icon @click="emit('delete')">
+        <v-icon>mdi-delete</v-icon>
+      </v-btn>
     </v-card-title>
     <v-card-text>
       <div id="plotly" ref="plot" style="width:90%;height:250px;"></div>
@@ -29,6 +37,8 @@ import Plotly from 'plotly.js-dist'
     })
 
     const name = ref(props.modelValue.name)
+
+    const emit = defineEmits(['delete'])
 
     const plot = ref(null)
     onMounted(() => {
@@ -65,5 +75,17 @@ import Plotly from 'plotly.js-dist'
 div #plotly {
   width: 100% !important;
   height: 350px !important;
+}
+
+/* Additional styles to ensure proper alignment, if necessary */
+.v-card-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Ensure the handle and delete icon do not wrap on smaller screens */
+.handle, .v-btn {
+  flex-shrink: 0;
 }
 </style>

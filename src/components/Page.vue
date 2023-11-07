@@ -31,10 +31,11 @@
       item-key="id"
       class="dragColumn"
       @update="handleUpdate">
-      <template #item="{element}">
+      <template #item="{element, index}">
         <v-col cols="12">
           <v-card>
-            <component :is="stringToComponent(element.type)" :modelValue="element"/>
+            <!-- Pass a method to the component that allows it to emit a delete event -->
+            <component :is="stringToComponent(element.type)" :modelValue="element" @delete="deleteCard(index)" />
           </v-card>
         </v-col>
       </template>
@@ -94,13 +95,25 @@ export default {
       })
     }
 
+    // Add a method to handle the delete event
+    const deleteCard = (index: number) => {
+      // Remove the card from the array
+      internalCards.value.splice(index, 1)
+      // Emit an update event to the parent component
+      emit('update:modelValue', {
+        ...props.modelValue,
+        content: [...internalCards.value]
+      })
+    }
+
     return {
       internalCards,
       drag,
       onStart,
       onEnd,
       handleUpdate,
-      stringToComponent
+      stringToComponent,
+      deleteCard
     }
   }
 }
