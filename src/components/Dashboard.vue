@@ -20,7 +20,7 @@
     </v-col>
     <v-col cols="2">
       <vue-json-pretty :data="tabs" />
-    </v-col>  
+    </v-col>
     </v-row>
     <FileDragModal />
   </div>
@@ -43,8 +43,8 @@ export default {
   setup() {
     const tabs = reactive([
       { id: 0, name: 'Item 1', content: [
-        { type: "Plotly", name: 'Plot 1', content: 'Content 1', id: 0 },
-        { type: "Plotly", name: 'Plot 2', content: 'Content 2', id: 1 }
+        [{ type: "Plotly", name: 'Plot 1', content: 'Content 1', id: 0 }],
+        [{ type: "Plotly", name: 'Plot 2', content: 'Content 2', id: 1 }]
       ]},
       { id: 1, name: 'Item 2', content: [] },
       { id: 2, name: 'Item 3', content: [] },

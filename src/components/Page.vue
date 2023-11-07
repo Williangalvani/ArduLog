@@ -1,21 +1,45 @@
 <template>
-  <draggable 
-    v-model="internalCards" 
-    group="people" 
-    handle=".handle"
-    @start="onStart" 
-    @end="onEnd" 
-    ghost-class="ghost"
-    item-key="id"
-    @update="handleUpdate">
-    <template #item="{element}">
-      <v-col cols="12">
-        <v-card>
-          <component :is="stringToComponent(element.type)" :modelValue="element"/>
-        </v-card>
-      </v-col>
-    </template>
-  </draggable>
+  <v-row class="dragArea">
+    <!-- First column draggable area -->
+    <draggable
+      v-model="internalCards[0]"
+      group="people"
+      handle=".handle"
+      @start="onStart"
+      @end="onEnd"
+      ghost-class="ghost"
+      item-key="id"
+      class="dragColumn"
+      @update="handleUpdate">
+      <template #item="{element}">
+        <v-col cols="12">
+          <v-card>
+            <component :is="stringToComponent(element.type)" :modelValue="element"/>
+          </v-card>
+        </v-col>
+      </template>
+    </draggable>
+
+    <!-- Second column draggable area -->
+    <draggable
+      v-model="internalCards[1]"
+      group="people"
+      handle=".handle"
+      @start="onStart"
+      @end="onEnd"
+      ghost-class="ghost"
+      item-key="id"
+      class="dragColumn"
+      @update="handleUpdate">
+      <template #item="{element}">
+        <v-col cols="12">
+          <v-card>
+            <component :is="stringToComponent(element.type)" :modelValue="element"/>
+          </v-card>
+        </v-col>
+      </template>
+    </draggable>
+  </v-row>
 </template>
 
 <script lang="ts">
@@ -85,7 +109,12 @@ export default {
 <style scoped>
 .dragArea {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: row;
+}
+
+.dragColumn {
+  flex: 1; /* Makes both columns equal width */
+  min-width: 0; /* Fixes flexbox overflow issue */
 }
 
 .ghost {
@@ -93,5 +122,18 @@ export default {
   background: #ccc;
   border: 1px dashed #999;
   box-shadow: 0 0 0 1px #999;
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 900px) {
+  .dragArea {
+    flex-direction: column;
+  }
+
+  .dragColumn {
+    flex: 0 0 100%; /* This ensures that each column takes full width */
+    max-width: 100%; /* This ensures that each column is not more than 100% width */
+    box-sizing: border-box; /* This ensures padding and borders are included in the width */
+  }
 }
 </style>
