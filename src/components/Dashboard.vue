@@ -15,12 +15,12 @@
       </v-tab>
     </v-tabs>
     <v-row>
-     <v-col cols="10">
+     <v-col cols="12">
       <page v-model="tabs[tab]" />
     </v-col>
-    <v-col cols="2">
+    <!-- <v-col cols="2">
       <vue-json-pretty :data="tabs" />
-    </v-col>
+    </v-col> -->
     </v-row>
     <FileDragModal />
   </div>
@@ -46,10 +46,10 @@ export default {
         [{ type: "Plotly", name: 'Plot 1', content: 'Content 1', id: 0 }],
         [{ type: "Plotly", name: 'Plot 2', content: 'Content 2', id: 1 }]
       ]},
-      { id: 1, name: 'Item 2', content: [] },
-      { id: 2, name: 'Item 3', content: [] },
-      { id: 3, name: 'Item 4', content: [] },
-      { id: 4, name: 'Item 5', content: [] }
+      { id: 1, name: 'Item 2', content: [[],[]] },
+      { id: 2, name: 'Item 3', content: [[],[]] },
+      { id: 3, name: 'Item 4', content: [[],[]] },
+      { id: 4, name: 'Item 5', content: [[],[]] },
     ])
     const tab = ref(0)
     const nextTabId = ref(5)

@@ -11,6 +11,9 @@
       <v-spacer></v-spacer>
 
       <!-- Delete icon button -->
+      <v-btn icon @click="openConfig">
+        <v-icon>mdi-cog</v-icon>
+      </v-btn>
       <v-btn icon @click="emit('delete')">
         <v-icon>mdi-delete</v-icon>
       </v-btn>
@@ -37,6 +40,9 @@ import Plotly from 'plotly.js-dist'
     })
 
     const name = ref(props.modelValue.name)
+
+    const openConfig = () => {
+    }
 
     const emit = defineEmits(['delete'])
 
