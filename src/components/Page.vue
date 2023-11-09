@@ -127,7 +127,7 @@ export default {
         {
           type: "Plotly",
           name: 'Plot 2',
-          content: 'Content 2',
+          content: undefined,
           id: newId(),
         })
 
