@@ -3,6 +3,11 @@
         <v-card-title class="headline">Manage Connections and Files
           <v-spacer></v-spacer>
         </v-card-title>
+        <v-list>
+          <v-list-item v-for="(file, index) in files" :key="index">
+              {{ file.file.name }} <v-chip>{{ file.format }}</v-chip>
+          </v-list-item>
+        </v-list>
         <v-tabs v-model="tab" grow>
           <v-tab key="websockets">WebSockets</v-tab>
           <v-tab key="files">Files</v-tab>
@@ -25,11 +30,6 @@
             </v-card-text>
             <v-card-text key="files" v-if="tab === 1">
               <v-file-input ref="fileInput" label="Select file" @change="handleFileInput" multiple />
-              <v-list>
-                <v-list-item v-for="(file, index) in files" :key="index">
-                    {{ file[0].name }} <v-chip>{{ file[1] }}</v-chip>
-                </v-list-item>
-              </v-list>
             </v-card-text>
       </v-card>
 </template>
@@ -57,9 +57,15 @@ export default {
     const handleFileInput = async (event: { target: { files: any } }) => {
       const files = event.target.files
       for (let i = 0; i < files.length; i++) {
-        const dataType = await DataManager.getInstance().identifyFileFormat(files[i])
-        if (dataType !== DataFormat.UNKNOWN) {
-          datastore.files.push([files[i], dataType])
+        const [dataType, loader] = await DataManager.getInstance().identifyFileFormat(files[i])
+        if (dataType !== DataFormat.UNKNOWN && loader !== null) {
+          datastore.files[files[i].name] =
+          {
+            file: files[i],
+            format: dataType,
+            loader: loader,
+            messages: await loader.loadFile(files[i]),
+          }
         }
       }
       fileInput.value?.reset()

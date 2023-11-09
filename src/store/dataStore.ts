@@ -1,18 +1,21 @@
 // Utilities
 import { defineStore } from 'pinia'
-import DataLoader from '@/dataManagement/dataLoaders/abstractLoader';
+import DataLoader, { messageType } from '@/dataManagement/dataLoaders/abstractLoader';
 import { DataFormat } from '@/dataManagement/dataManager';
+
+export interface FileEntry {
+  file: File
+  format: DataFormat
+  loader: DataLoader
+  messages: messageType[]
+}
 
 export const dataStore = defineStore('data', {
   state: () => ({
-    dataSources: [] as DataLoader[],
     websockets: [] as WebSocket[],
-    files: [] as [File, DataFormat][],
+    files: {} as { [key: string]: FileEntry }
   }),
 
   actions: {
-    addDataSource(dataLoader: DataLoader) {
-      this.dataSources.push(dataLoader);
-    }
   }
 })

@@ -1,6 +1,13 @@
+export interface messageType {
+    name: string;
+    multiplier: number;
+    description: string;
+    units: string;
+}
+
 export default class DataLoader {
     // These files are responsible for loading data from files or websockets
-    // they are not responsible for seeking, but should be able to load any 
+    // they are not responsible for seeking, but should be able to load any
     // arbitrary data from a file or websocket, upon request.
     // Live data should be emitted on receiving a message from the websocket.
 
@@ -34,7 +41,7 @@ export default class DataLoader {
         return false;
     }
 
-    public async loadFile(file: File): Promise<boolean> {
+    public async loadFile(file: File): Promise<messageType[]> {
         // load 1kb of data from the file and feed it to the isDataValid function
         // if the data is valid, then we can load the rest of the file.
         // const fileSlice = file.slice(0, 1024);
@@ -51,7 +58,7 @@ export default class DataLoader {
         //     }
         // }
         // fileReader.readAsArrayBuffer(fileSlice);
-        return false;
+        return [];
     }
 
     public onDisconnect(): void {

@@ -11,21 +11,19 @@ export enum DataFormat {
     MAVLINK = "MAVLINK",
     UNKNOWN = "UNKNOWN"
 }
-
-
 export default class DataManager {
     private loaders: Record<DataFormat, DataLoader> = {} as Record<DataFormat, DataLoader>;
     private detectedFormat = DataFormat.UNKNOWN;
     private static instance: DataManager;
 
 
-    private constructor() { 
+    private constructor() {
       this.loaders[DataFormat.DATAFLASH] = new DataflashLoader();
       this.loaders[DataFormat.CSV] = new CsvLoader();
       this.loaders[DataFormat.JSON] = new JsonLoader();
       this.loaders[DataFormat.MAVLINK] = new MavlinkLoader();
     }
-    
+
     // singleton getter
     public static getInstance(): DataManager {
       if (!DataManager.instance) {
@@ -34,14 +32,28 @@ export default class DataManager {
       return DataManager.instance;
     }
 
+    private createLoaderForType(type: DataFormat): DataLoader {
+      switch (type) {
+        case DataFormat.CSV:
+          return new CsvLoader();
+        case DataFormat.DATAFLASH:
+          return new DataflashLoader();
+        case DataFormat.JSON:
+          return new JsonLoader();
+        case DataFormat.MAVLINK:
+          return new MavlinkLoader();
+        default:
+          throw new Error("Unknown data format");
+      }
+    }
 
-    public async identifyFileFormat(input: File): Promise<DataFormat> {
+    public async identifyFileFormat(input: File): Promise<[DataFormat, DataLoader | null]> {
       for (const [type, loader] of Object.entries(this.loaders)) {
         if (await loader.isDataValid(input)) {
-          return type as DataFormat;
+          return [type as DataFormat, this.createLoaderForType(type as DataFormat)];
         }
       }
-      return DataFormat.UNKNOWN;
+      return [DataFormat.UNKNOWN, null];
     }
 
     public loadWebsocket(input: string): boolean {
