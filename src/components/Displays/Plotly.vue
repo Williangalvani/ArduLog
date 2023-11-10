@@ -35,16 +35,13 @@
         <!-- Form for configuration options -->
         <v-container>
           <v-row>
-            <data-picker></data-picker>
+            <data-picker v-model="props.modelValue.content"></data-picker>
             <!-- Add other form controls as needed -->
           </v-row>
         </v-container>
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="primary" @click="updateContent">
-          Save
-        </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -91,15 +88,6 @@
     const openConfig = () => {
       initializeModelValue() // Call here to ensure data is correct when opening the dialog
       dialog.value = true
-    }
-
-    const updateContent = () => {
-      // Update content based on the dialog input
-      content.value.names.push(name.value)
-      // Update other options as needed
-      props.modelValue.content = content.value // Ensure the modelValue is updated with the ref
-      dialog.value = false
-      emit('update:modelValue', props.modelValue)
     }
 
     const emit = defineEmits(['delete', 'update:modelValue'])

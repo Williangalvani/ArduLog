@@ -15,7 +15,7 @@
         <v-col cols="12">
           <v-card>
             <!-- Pass a method to the component that allows it to emit a delete event -->
-            <component :is="stringToComponent(element.type)" :modelValue="element" @delete="deleteCard" />
+            <component :is="stringToComponent(element.type)" :modelValue="element" @delete="deleteCard(element.id)" />
           </v-card>
         </v-col>
       </template>
@@ -87,6 +87,7 @@ export default {
 
     const onEnd = () => {
       drag.value = false
+      handleUpdate()
     }
 
     const stringToComponent = (str: string) => {
@@ -123,12 +124,13 @@ export default {
     }
 
     const addCard = () => {
-      internalCards.value[0].push(
+      const id = newId()
+      internalCards.value[1].push(
         {
           type: "Plotly",
-          name: 'Plot 2',
+          name: `Plot ${id}`,
           content: undefined,
-          id: newId(),
+          id: id,
         })
 
       // Emit an update event to the parent component

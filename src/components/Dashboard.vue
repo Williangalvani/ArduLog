@@ -15,12 +15,12 @@
       </v-tab>
     </v-tabs>
     <v-row>
-     <v-col cols="12">
+     <v-col cols="10">
       <page v-model="tabs[tab]" />
     </v-col>
-    <!-- <v-col cols="2">
+    <v-col cols="2">
       <vue-json-pretty :data="tabs" />
-    </v-col> -->
+    </v-col>
     </v-row>
     <FileDragModal />
   </div>
