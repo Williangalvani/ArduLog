@@ -35,19 +35,7 @@
         <!-- Form for configuration options -->
         <v-container>
           <v-row>
-            <v-col cols="12">
-              <v-text-field
-                label="Name"
-                v-model="name"
-              ></v-text-field>
-            </v-col>
-            <v-col cols="12">
-              <!-- You can expand your options form here -->
-              <v-text-field
-                label="Option"
-                v-model="content.options.optionName"
-              ></v-text-field>
-            </v-col>
+            <data-picker></data-picker>
             <!-- Add other form controls as needed -->
           </v-row>
         </v-container>
@@ -63,8 +51,9 @@
 </template>
 
 <script setup lang="ts">
-    import { ref, watch, toRefs, onMounted, defineProps, defineEmits } from 'vue'
+    import { ref, watch, toRefs, onMounted } from 'vue'
     //import Plotly from 'plotly.js-dist-min'
+    import DataPicker from '../utils/DataPicker.vue';
     import Plotly from 'plotly.js-dist'
 
     const props = defineProps({

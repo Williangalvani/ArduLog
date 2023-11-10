@@ -4,7 +4,7 @@ export class CsvLoader extends DataLoader {
 
   public async isDataValid(data: File): Promise<boolean> {
     // Convert the ArrayBuffer to a string
-    let reader = new FileReader();
+    const reader = new FileReader();
     let text = undefined as string | undefined;
 
     // Create a promise to handle FileReader async read

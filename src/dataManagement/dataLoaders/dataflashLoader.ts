@@ -19,10 +19,10 @@ export class DataflashLoader extends DataLoader {
         }
       }
 
-      let reader = new FileReader()
+      const reader = new FileReader()
       reader.onload = (e) => {
-          let arrayBuffer = new Uint8Array(reader.result as ArrayBuffer)
-          let data = reader.result
+          const arrayBuffer = new Uint8Array(reader.result as ArrayBuffer)
+          const data = reader.result
           this.worker.postMessage({
               action: 'parse',
               file: data,
@@ -65,10 +65,10 @@ export class DataflashLoader extends DataLoader {
       }
     }
 
-    let reader = new FileReader()
+    const reader = new FileReader()
     reader.onload = (e) => {
-        let arrayBuffer = new Uint8Array(reader.result as ArrayBuffer)
-        let data = reader.result
+        const arrayBuffer = new Uint8Array(reader.result as ArrayBuffer)
+        const data = reader.result
         this.worker.postMessage({
             action: 'parse',
             file: data,

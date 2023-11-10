@@ -42,7 +42,7 @@ import InputManager from '@/components/InputManager.vue';
 
 const showInputManager = ref(false);
 
-components: {
+{
     Page
     Dashboard
     InputManager
